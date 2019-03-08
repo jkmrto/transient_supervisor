@@ -1,11 +1,11 @@
-defmodule TransientSupervisor.Supervisor do
+defmodule TransientSupervisor.TransientSupervisor do
   require Logger
   @moduledoc false
 
   use Supervisor
 
   def start_link(),
-    do: Supervisor.start_link(__MODULE__, [], [name: __MODULE__])
+    do: Supervisor.start_link(__MODULE__, [], name: __MODULE__)
 
   def init(_arg) do
     children = [
@@ -25,14 +25,13 @@ defmodule TransientSupervisor.Supervisor do
   end
 
   def stop_transient_supervisor() do
-
-    Logger.info("#{inspect Supervisor.count_children(__MODULE__)}")
     case Supervisor.count_children(__MODULE__) do
       %{active: 0} ->
-        Logger.info("Let's destroy  the supervisor")
+        Logger.debug("Let's destroy  the supervisor")
         Supervisor.stop(__MODULE__, :normal)
-      _ -> :ok
+
+      _ ->
+        :ok
     end
   end
-
 end

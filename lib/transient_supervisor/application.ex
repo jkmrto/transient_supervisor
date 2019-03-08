@@ -1,4 +1,4 @@
-defmodule TransientSupervisor do
+defmodule TransientSupervisor.Application do
   use Application
   require Logger
 
@@ -6,8 +6,8 @@ defmodule TransientSupervisor do
     # List all child processes to be supervised
     children = [
       %{
-        id: TransientSupervisor.Supervisor,
-        start: {TransientSupervisor.Supervisor, :start_link, []},
+        id: TransientSupervisor.TransientSupervisor,
+        start: {TransientSupervisor.TransientSupervisor, :start_link, []},
         restart: :transient,
         type: :supervisor
       }
@@ -16,5 +16,4 @@ defmodule TransientSupervisor do
     opts = [strategy: :one_for_one, name: TransientSupervisor]
     Supervisor.start_link(children, opts)
   end
-
 end
